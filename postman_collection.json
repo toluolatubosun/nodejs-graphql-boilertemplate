@@ -1,0 +1,2195 @@
+{
+	"info": {
+		"_postman_id": "0ea0bfa0-5ffe-4c18-8ce6-da93e9ac6498",
+		"name": "GraphQL API Starter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12264899"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authRegister($input: RegisterInput!) {\r\n    authRegister(input: $input) {\r\n        user {\r\n            id\r\n            name\r\n            email\r\n        }\r\n        token {\r\n            accessToken\r\n            refreshToken\r\n        }\r\n    }\r\n}\r\n",
+								"variables": "{\r\n    \"input\": {\r\n        \"name\": \"John Olatubosun\", \r\n        \"email\": \"toluolatubosun@gmail.com\",\r\n        \"password\": \"password\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "localhost:8000/graphql",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "648"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"288-eUkGckulikP1SPnIUu4szVCoNDs\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Aug 2022 21:21:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authRegister\": {\n            \"user\": {\n                \"id\": \"6307e7c6943b01bc96a60d50\",\n                \"name\": \"John Olatubosun\",\n                \"email\": \"toluolatubosun@gmail.com\"\n            },\n            \"token\": {\n                \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDdlN2M2OTQzYjAxYmM5NmE2MGQ1MCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjYxNDYyNDc2LCJleHAiOjE2NjE0NjYwNzZ9.Vjdj1jR6opNWqalEcIo91d7qST6zi9pU5_ToJvdHjJA\",\n                \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA3ZTdjNjk0M2IwMWJjOTZhNjBkNTAiLCJyZWZyZXNoVG9rZW4iOiIxMGY4NjZhY2RhMjYyZWFmZTI2YjRjNGY2Y2E0NDI4MmUxZWU2ZTIzN2Y4YjA1Yzk2YWJlNDFjZmFmZTI2YTk1IiwiaWF0IjoxNjYxNDYyNDc2LCJleHAiOjE2NjQwNTQ0NzZ9.pNm0xCUwxc5xVtzu9YnZUUJyzwKQpwPRY-GE-7EXQog\"\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authLogin($input: LoginInput!) {\r\n    authLogin(input: $input) {\r\n        user {\r\n            name\r\n            email\r\n        }\r\n        token {\r\n            accessToken\r\n            refreshToken\r\n        }\r\n    }\r\n}",
+								"variables": "{\r\n    \"input\": {\r\n        \"email\": \"toluolatubosun@gmail.com\",\r\n        \"password\": \"password\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "613"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"265-sYrhndvOs1XW4qRb0aMPICvHIIY\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 08 Sep 2022 13:09:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authLogin\": {\n            \"user\": {\n                \"name\": \"John Olatubosun\",\n                \"email\": \"toluolatubosun@gmail.com\"\n            },\n            \"token\": {\n                \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDdlN2M2OTQzYjAxYmM5NmE2MGQ1MCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjYyNjQyNTc5LCJleHAiOjE2NjI2NDYxNzl9.j4D3NKafhqtG07xKWCHvS9msdFYsiAXSIm1k79FKPxs\",\n                \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA3ZTdjNjk0M2IwMWJjOTZhNjBkNTAiLCJyZWZyZXNoVG9rZW4iOiI3MGZmNmQ1YWZlOTAxZDRhZGM2M2Q0MzI3NjQ3ZjlhNDlkMWIyN2EwMmRhY2QyODZlMjQ2YTg1NWEwODE3MjM4IiwiaWF0IjoxNjYyNjQyNTc5LCJleHAiOjE2NjUyMzQ1Nzl9.7HdNGsdVEJ31TIAf7i21m5JR6Ds7-bAb3ALHr6xp0nI\"\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authRefreshAccessToken($refreshToken: String!) {\r\n    accessToken: authRefreshAccessToken(refreshToken: $refreshToken)\r\n}",
+								"variables": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA3ZTdjNjk0M2IwMWJjOTZhNjBkNTAiLCJyZWZyZXNoVG9rZW4iOiIwZDFmNzhlYjgwNTY4N2M5OGQzYzg2NmRjOWUyMzM0YjA3OGQzZmMwMDc0NTJmNDJkMWM0Mzc2ZTJkNzkxYTgzIiwiaWF0IjoxNjYzMDEzNDI4LCJleHAiOjE2NjU2MDU0Mjh9.nfWJz7OwpbWp624X2QYQ9HN_OuJfLnc_v3wT5a2hTes\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh Access Token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "217"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d9-m+XqeF5tW8DA8KQDAsfjumwWtjc\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 20:13:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDc0ODIxOTA3MTg4MzUyZmM2MTY0MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjYzMDEzNjI5LCJleHAiOjE2NjMwMTcyMjl9.8wwmR-65ICjiRmpnUnCnMGGPd_34TP3f9NX89v9_LoU\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authLogout($refreshToken: String!) {\r\n    authLogout(refreshToken: $refreshToken)\r\n}",
+								"variables": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA3ZTdjNjk0M2IwMWJjOTZhNjBkNTAiLCJyZWZyZXNoVG9rZW4iOiIwOWU3ZTAyZTlkOTI5ZTMxZDg2MGVkNTNjYTk1OGM3NjBlY2I4YWQ2M2Y5NTdhZDk1ZGFlZDlhYTFmMmU1ZDZmIiwiaWF0IjoxNjYzMDA4MjI3LCJleHAiOjE2NjU2MDAyMjd9.J8FncF0EzoJk-rWMqao1U0BW87hspg2OgaWnuyPDbaE\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Logout",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "29"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1d-MLR6yXqfOJBqt3LItKonhBw7/mA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 18:42:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authLogout\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authVerifyEmail($userId: ID!, $verifyToken: String!) {\r\n    authVerifyEmail(userId: $userId, verifyToken: $verifyToken)\r\n}",
+								"variables": "{\r\n    \"userId\": \"631f9350adbe0e379f8b080c\",\r\n    \"verifyToken\": \"e683d2e51623ae36e2943e1512844cfcc70823671089d38439718c62e48089c4\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Verify Email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-UDZeGtPN8FwltYmkUGV0dtn3zAM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 20:50:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authVerifyEmail\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Request Email Verification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authVerifyEmail($email: String!) {\r\n    authRequestEmailVerification(email: $email)\r\n}",
+								"variables": "{\r\n    \"email\": \"toluolatubosun@gmail.com\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email Verification",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2f-jXqzlQbffnRTplkd8yck0cH+Z0k\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 20:49:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authRequestEmailVerification\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authResetPassword($userId: ID!, $resetToken: String!, $password: String!) {\r\n    authResetPassword(userId: $userId, resetToken: $resetToken, password: $password)\r\n}",
+								"variables": "{\r\n    \"userId\": \"6307e7c6943b01bc96a60d50\",\r\n    \"resetToken\": \"53b7625327db647497cb0b6ecd765a12b6600ae3ed0af5f23a652d2a71730136\",\r\n    \"password\": \"password\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Reset Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "36"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"24-l4sN4DTYG4rhZ9y9bb1UFYtCH+M\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 21:32:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authResetPassword\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Request Password Reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authRequestPasswordReset($email: String!) {\r\n    authRequestPasswordReset(email: $email)\r\n}",
+								"variables": "{\r\n    \"email\": \"toluolatubosun@gmail.com\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Password Reset",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-2Lbzx+C6CAuHHiyWh6hTPzOz31o\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Sep 2022 21:30:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authRequestPasswordReset\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation authUpdatePassword($oldPassword: String!, $newPassword: String!) {\r\n    authUpdatePassword(oldPassword: $oldPassword, newPassword: $newPassword)\r\n}",
+								"variables": "{\r\n    \"oldPassword\": \"password\",\r\n    \"newPassword\": \"newpassword\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-bJMkjBDSplHTqqJvILb3Vv0iXxc\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 13 Sep 2022 10:23:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"authUpdatePassword\": true\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation userCreate($input: UserDataInput!){\r\n    userCreate(input: $input) {\r\n        name\r\n        email\r\n    }\r\n}",
+								"variables": "{\r\n    \"input\": {\r\n        \"name\": \"John Olatubosun\",\r\n        \"email\": \"toluolatubosun@gmail.com\",\r\n        \"password\": \"password\",\r\n        \"role\": \"user\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create User - Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-YVSKt6RLcfIYUNuWmydp34JAt+Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Sep 2022 11:04:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"userCreate\": {\n            \"name\": \"John Olatubosun\",\n            \"email\": \"toluolatubosun@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Me",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n    me {\r\n        id\r\n        name\r\n        email\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Me",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "110"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6e-LK85lyeZbS28QXRjOoEB/bf2Kes\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Sep 2022 11:17:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"me\": {\n            \"id\": \"63074821907188352fc61641\",\n            \"name\": \"John Olatubosun\",\n            \"email\": \"toluolatubosun@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get One User - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query user($userId: ID!) {\r\n    user(userId: $userId) {\r\n        id\r\n        name\r\n        email\r\n    }\r\n}",
+								"variables": "{\r\n    \"userId\": \"63074821907188352fc61641\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get One User - Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "112"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"70-gM/PeZLsCA3TErbB2ZAYo/bAnLU\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Sep 2022 11:24:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": \"63074821907188352fc61641\",\n            \"name\": \"John Olatubosun\",\n            \"email\": \"toluolatubosun@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Users - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query users($pagination: PaginationInput!) {\r\n    users(pagination: $pagination) {\r\n        users {\r\n            id\r\n            name\r\n            createdAt\r\n        }\r\n        pagination {\r\n            total\r\n            next\r\n            hasNext\r\n        }\r\n    }\r\n}",
+								"variables": "{\r\n    \"pagination\": {\r\n        \"limit\": 3\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Users - Admin - (1)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "384"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"180-amxF8UaxbYiAtrfNUhFcG2LOv3Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 17 Sep 2022 13:46:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"users\": {\n            \"users\": [\n                {\n                    \"id\": \"63074821907188352fc61641\",\n                    \"name\": \"John Olatubosun\",\n                    \"createdAt\": \"1661421601633\"\n                },\n                {\n                    \"id\": \"63234e99db46dc76dea62d2e\",\n                    \"name\": \"John Olatubosun 2\",\n                    \"createdAt\": \"1661508001633\"\n                },\n                {\n                    \"id\": \"63234ea1db46dc76dea62d2f\",\n                    \"name\": \"John Olatubosun 3\",\n                    \"createdAt\": \"1661594401633\"\n                }\n            ],\n            \"pagination\": {\n                \"total\": 5,\n                \"next\": \"63234ea1db46dc76dea62d2f_1661594401633\",\n                \"hasNext\": true\n            }\n        }\n    }\n}"
+						},
+						{
+							"name": "Get All Users - Admin - (2)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "262"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"106-TafK15vK1qbP1r+wfC5AmXXFgrQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 17 Sep 2022 13:47:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"users\": {\n            \"users\": [\n                {\n                    \"id\": \"63239535db46dc76dea62d30\",\n                    \"name\": \"John Olatubosun 4\",\n                    \"createdAt\": \"1661680801633\"\n                },\n                {\n                    \"id\": \"63239544db46dc76dea62d31\",\n                    \"name\": \"John Olatubosun 5\",\n                    \"createdAt\": \"1661767201633\"\n                }\n            ],\n            \"pagination\": {\n                \"total\": 5,\n                \"next\": null,\n                \"hasNext\": false\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Me",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation userUpdateMe($input: UserDataInput!) {\r\n    userUpdateMe(input: $input) {\r\n        id\r\n        name\r\n        email\r\n    }\r\n}",
+								"variables": "{\r\n    \"input\": {\r\n        \"name\": \"Olatubosun John\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Me",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "120"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"78-WSdSqRofXzHcglHuk4kQ68uiPj4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 17 Sep 2022 14:40:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"userUpdateMe\": {\n            \"id\": \"63074821907188352fc61641\",\n            \"name\": \"Olatubosun John\",\n            \"email\": \"toluolatubosun@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update User - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation userUpdate($userId: ID!, $input: UserDataInput!) {\r\n    userUpdate(userId: $userId, input: $input) {\r\n        id\r\n        name\r\n        role\r\n        image\r\n        email\r\n    }\r\n}",
+								"variables": "{\r\n    \"userId\": \"63234e99db46dc76dea62d2e\",\r\n    \"input\": {\r\n        \"name\": \"Micheal Bane\",\r\n        \"role\": \"admin\"\r\n    }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update User - Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "132"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"84-unGwOM7HPgc7yq7dKsyh0PKgtUI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 17 Sep 2022 14:47:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"userUpdate\": {\n            \"id\": \"63234e99db46dc76dea62d2e\",\n            \"name\": \"Micheal Bane\",\n            \"role\": \"admin\",\n            \"email\": \"toluolatubosun+2@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete User - Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation userDelete($userId: ID!) {\r\n    userDelete(userId: $userId) {\r\n        id\r\n        name\r\n        email\r\n    }\r\n}",
+								"variables": "{\r\n    \"userId\": \"63239544db46dc76dea62d31\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{GRAPHQL_END_POINT}}",
+							"host": [
+								"{{GRAPHQL_END_POINT}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete User - Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql"
+								},
+								"url": {
+									"raw": "{{GRAPHQL_END_POINT}}",
+									"host": [
+										"{{GRAPHQL_END_POINT}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Expect-CT",
+									"value": "max-age=0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "122"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7a-BDTGuhUBnjeqLhIC/TYw3iNH2gg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 17 Sep 2022 14:55:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"userDelete\": {\n            \"id\": \"63239544db46dc76dea62d31\",\n            \"name\": \"John Olatubosun 5\",\n            \"email\": \"toluolatubosun+5@gmail.com\"\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Hello World",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    hello\r\n}\r\n\r\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{GRAPHQL_END_POINT}}",
+					"host": [
+						"{{GRAPHQL_END_POINT}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{AUTH_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "GRAPHQL_END_POINT",
+			"value": "http://localhost:8000/graphql",
+			"type": "string"
+		},
+		{
+			"key": "AUTH_TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
