@@ -18,5 +18,5 @@ export const MAILER = {
     PORT: process.env.MAILER_PORT || 465,
     SECURE: process.env.MAILER_SECURE || false,
     PASSWORD: process.env.MAILER_PASSWORD || "",
-    HOST: process.env.MAILER_HOST || "smtp.gmail.com",
+    HOST: process.env.MAILER_HOST || "smtp.gmail.com"
 };

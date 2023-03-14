@@ -8,7 +8,6 @@ interface UserDataInput {
     role?: "user" | "admin";
 }
 
-
 interface UserUpdateInput {
     name?: string;
     image?: string;
