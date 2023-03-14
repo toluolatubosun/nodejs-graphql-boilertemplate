@@ -16,7 +16,7 @@ export default {
     },
     userUpdate: async (_: any, { userId, input }: UserUpdateArgs, context: Context): Promise<IUser> => {
         const user = guard(context.user, ROLE.ADMIN);
-        return await UserService.update(userId, input, user.role);
+        return await UserService.update(userId, input);
     },
     userDelete: async (_: any, { userId }: UserDeleteArgs, context: Context): Promise<IUser> => {
         guard(context.user, ROLE.ADMIN);

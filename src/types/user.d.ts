@@ -1,13 +1,18 @@
 /////////////////////// Service ///////////////////////
 
 interface UserDataInput {
-    name?: string;
-    email?: string;
+    name: string;
+    email: string;
     image?: string;
-    password?: string;
+    password: string;
     role?: "user" | "admin";
 }
 
+
+interface UserUpdateInput {
+    name?: string;
+    image?: string;
+}
 /////////////////////// GraphQL Resolvers ///////////////////////
 
 interface UserDataArgs {
@@ -16,7 +21,7 @@ interface UserDataArgs {
 
 interface UserUpdateArgs {
     userId: string;
-    input: UserDataInput;
+    input: UserUpdateInput;
 }
 
 interface UserDeleteArgs {
