@@ -19,5 +19,4 @@ export const MAILER = {
     SECURE: process.env.MAILER_SECURE || false,
     PASSWORD: process.env.MAILER_PASSWORD || "",
     HOST: process.env.MAILER_HOST || "smtp.gmail.com",
-    DOMAIN: process.env.MAILER_DOMAIN || "@my-apollo-server-express-starter.com"
 };

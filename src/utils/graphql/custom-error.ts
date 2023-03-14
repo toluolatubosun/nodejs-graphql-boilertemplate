@@ -1,9 +1,22 @@
-import { ApolloError } from "apollo-server-errors";
+import { GraphQLFormattedError, GraphQLError } from "graphql";
 
-export default class CustomError extends ApolloError {
+class CustomError extends GraphQLError {
     constructor(message: string, code = "CUSTOM_ERROR") {
-        super(message, code);
-
+        super(message, { extensions: { code } });
         Object.defineProperty(this, "name", { value: "CustomError" });
     }
 }
+
+export default CustomError;
+
+export const handleError = (formattedError: GraphQLFormattedError, error: unknown) => {
+    if (formattedError.message.startsWith("Database Error: ")) {
+        return { message: "Internal server error" };
+    }
+
+    if (error instanceof CustomError) {
+        return { message: error.message };
+    }
+
+    return formattedError;
+};
