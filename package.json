@@ -5,10 +5,10 @@
     "main": "src/index.js",
     "scripts": {
         "build": "tsc -p .",
-        "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
+        "dev": "nodemon --watch src --exec ts-node -r tsconfig-paths/register src/index.ts",
         "start": "node build/index.js",
         "prettier": "prettier --write .",
-        "lint": "eslint src/**/*.ts",
+        "lint": "eslint src/**/*.{ts,tsx}",
         "format": "eslint src/**/*.ts --fix"
     },
     "keywords": [
