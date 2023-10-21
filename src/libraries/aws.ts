@@ -46,6 +46,23 @@ class AWSUtil {
         return `https://${CONFIGS.AWS.S3_BUCKET}.s3.amazonaws.com/${params.Key}`;
     }
 
+    async uploadBuffer(buffer: Buffer, contentType: string, folder: string, ACL = "private") {
+        if (buffer.length > 10 * 1024 * 1024) throw new CustomError("File size limit exceeded (10MB)", "FILE_SIZE_EXCEEDED");
+
+        const params = {
+            Body: buffer,
+            ContentType: contentType,
+            ACL: ACL as ObjectCannedACL,
+            Bucket: CONFIGS.AWS.S3_BUCKET,
+            Key: `${folder}/${nanoid()}_${new Date().getTime()}`
+        };
+
+        const command = new PutObjectCommand(params);
+        await this.s3.send(command);
+
+        return `https://${CONFIGS.AWS.S3_BUCKET}.s3.amazonaws.com/${params.Key}`;
+    }
+
     async deleteFile(Location: string) {
         if (!Location.includes(CONFIGS.AWS.S3_BUCKET)) return;
 
