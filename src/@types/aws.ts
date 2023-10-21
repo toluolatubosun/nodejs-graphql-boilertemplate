@@ -1,6 +1,6 @@
 interface AWSTemplateEmailData {
     template: string;
-    templateData: Object;
+    templateData: Record<string, unknown>;
 }
 
 interface HTMLEmailData {
@@ -9,8 +9,8 @@ interface HTMLEmailData {
 }
 
 interface AWSTemplateBulkEmailReceiverData {
-    data: Object;
     email: string;
+    data: Record<string, unknown>;
 }
 
 interface AWSUploadUrlData {
