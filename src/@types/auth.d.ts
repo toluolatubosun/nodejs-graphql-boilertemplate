@@ -26,7 +26,7 @@ interface LogoutInput {
 
 interface VerifyEmailInput {
     userId: string;
-    verifyToken: string;
+    verificationToken: string;
 }
 
 interface ResetPasswordInput {
@@ -65,7 +65,7 @@ interface AuthRequestEmailVerificationArgs {
 
 interface AuthVerifyEmailArgs {
     userId: string;
-    verifyToken: string;
+    verificationToken: string;
 }
 
 interface AuthUpdatePasswordArgs {

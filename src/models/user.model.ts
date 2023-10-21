@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
-import { BCRYPT_SALT } from "./../config";
+import { CONFIGS } from "../configs";
 
 export interface IUser extends mongoose.Document {
     name: string;
@@ -9,13 +9,13 @@ export interface IUser extends mongoose.Document {
     password: string;
     image: string;
     role: "user" | "admin";
-    isVerified: boolean;
-    isActive: boolean;
+    emailVerified: boolean;
+    accountDisabled: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
 
-const userSchema: mongoose.Schema = new mongoose.Schema(
+const userSchema: mongoose.Schema = new mongoose.Schema<IUser>(
     {
         name: {
             type: String,
@@ -43,12 +43,12 @@ const userSchema: mongoose.Schema = new mongoose.Schema(
             enum: ["user", "admin"],
             default: "user"
         },
-        isActive: {
+        accountDisabled: {
             type: Boolean,
             required: true,
             default: true
         },
-        isVerified: {
+        emailVerified: {
             type: Boolean,
             required: true,
             default: false
@@ -62,7 +62,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
 
-    const hash = await bcrypt.hash(this.password, BCRYPT_SALT);
+    const hash = await bcrypt.hash(this.password, CONFIGS.BCRYPT_SALT);
     this.password = hash;
 
     next();

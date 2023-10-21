@@ -1,7 +1,7 @@
-import helloQueries from "./hello.query";
-import userQueries from "./user.query";
+import userQueries from "@/graphql/resolvers/Query/user.query";
+import helloQueries from "@/graphql/resolvers/Query/hello.query";
 
 export default {
-    ...helloQueries,
-    ...userQueries
+    ...userQueries,
+    ...helloQueries
 };

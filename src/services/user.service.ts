@@ -1,11 +1,23 @@
-import User from "./../models/user.model";
-import CloudinaryUtil from "../utils/cloudinary";
-import CustomError from "./../utils/graphql/custom-error";
+import Joi from "joi";
+import User from "@/models/user.model";
+import CloudinaryUtil from "@/libraries/cloudinary";
+import CustomError from "@/utilities/graphql/custom-error";
 
 import type { UploadApiResponse } from "cloudinary";
 
 class UserService {
-    async create(data: UserDataInput) {
+    async create(input: UserDataInput) {
+        const { error, value: data } = Joi.object<UserDataInput>({
+            name: Joi.string().required(),
+            role: Joi.string().optional(),
+            image: Joi.string().optional(),
+            password: Joi.string().required(),
+            email: Joi.string().email().required()
+        })
+            .options({ stripUnknown: true })
+            .validate(input);
+        if (error) throw new CustomError(error.message);
+
         if (data.image) {
             data.image = ((await CloudinaryUtil.uploadBase64(data.image, "users")) as UploadApiResponse).secure_url;
         }
@@ -38,7 +50,7 @@ class UserService {
         const hasNext = users.length > limit;
         if (hasNext) users.pop(); // Remove the extra user from the array
 
-        const nextCursor = hasNext ? `${users[users.length - 1]._id}_${users[users.length - 1].createdAt.getTime()}` : null;
+        const nextCursor = hasNext ? `${users[users.length - 1]?._id}_${users[users.length - 1]?.createdAt?.getTime()}` : null;
 
         return {
             users,
@@ -57,7 +69,15 @@ class UserService {
         return user;
     }
 
-    async update(userId: string, data: UserUpdateInput) {
+    async update(userId: string, input: UserUpdateInput) {
+        const { error, value: data } = Joi.object<UserUpdateInput>({
+            name: Joi.string().optional(),
+            image: Joi.string().optional()
+        })
+            .options({ stripUnknown: true })
+            .validate(input);
+        if (error) throw new CustomError(error.message);
+
         if (data.image) {
             data.image = ((await CloudinaryUtil.uploadBase64(data.image, "users")) as UploadApiResponse).secure_url;
             await this.deleteUserImage(userId); // Delete the old image
@@ -83,7 +103,7 @@ class UserService {
         const user = await this.getOne(userId);
         if (!user.image) return true;
 
-        return await CloudinaryUtil.delete(user.image);
+        return await CloudinaryUtil.deleteFile(user.image);
     }
 }
 

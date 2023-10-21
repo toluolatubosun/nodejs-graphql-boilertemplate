@@ -8,13 +8,13 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
+        authLogout(refreshToken: String): Boolean!
         authLogin(input: LoginInput!): AuthPayload!
-        authLogout(refreshToken: String!): Boolean!
         authRegister(input: RegisterInput!): AuthPayload!
         authRequestPasswordReset(email: String!): Boolean!
-        authRefreshAccessToken(refreshToken: String!): String!
+        authRefreshAccessToken(refreshToken: String): String!
         authRequestEmailVerification(email: String!): Boolean!
-        authVerifyEmail(userId: ID!, verifyToken: String!): Boolean!
+        authVerifyEmail(userId: ID!, verificationToken: String!): Boolean!
         authUpdatePassword(oldPassword: String!, newPassword: String!): Boolean!
         authResetPassword(userId: ID!, resetToken: String!, password: String!): Boolean!
 

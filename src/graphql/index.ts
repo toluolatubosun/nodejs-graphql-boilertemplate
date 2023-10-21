@@ -6,11 +6,11 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from "@apollo/server/plugin/landingPage/default";
 
-import typeDefs from "./schema";
-import resolvers from "./resolvers";
-import { NODE_ENV, PORT } from "../config";
-import auth from "../middlewares/graphql/auth.middleware";
-import { handleError } from "../utils/graphql/custom-error";
+import { CONFIGS } from "@/configs";
+import typeDefs from "@/graphql/schema";
+import resolvers from "@/graphql/resolvers";
+import auth from "@/middlewares/graphql/auth.middleware";
+import { handleError } from "@/utilities/graphql/custom-error";
 
 import type { Server } from "http";
 import type { Application } from "express";
@@ -23,7 +23,7 @@ export default async (app: Application, httpServer: Server) => {
         validationRules: [depthLimit(10)],
         plugins: [
             ApolloServerPluginDrainHttpServer({ httpServer }),
-            NODE_ENV === "production"
+            CONFIGS.NODE_ENV === "production"
                 ? ApolloServerPluginLandingPageProductionDefault({ graphRef: "my-graph-id@my-graph-variant", footer: false })
                 : ApolloServerPluginLandingPageLocalDefault({ footer: false })
         ]
@@ -34,13 +34,12 @@ export default async (app: Application, httpServer: Server) => {
     app.use(
         "/graphql",
         express.json(),
-        cors<cors.CorsRequest>({
-            origin: "*"
-        }),
+        cors<cors.CorsRequest>(CONFIGS.CORS_SETTINGS),
         expressMiddleware(server, {
             context: async ({ req, res }: any) => {
-                const user = await auth(req.headers.authorization);
+                const user = await auth({ authorization: req.headers.authorization, cookieToken: req.cookies.__access });
                 return {
+                    req,
                     res,
                     user
                 };
@@ -48,9 +47,9 @@ export default async (app: Application, httpServer: Server) => {
         })
     );
 
-    await new Promise<void>((resolve) => httpServer.listen({ port: PORT as number }, resolve));
+    await new Promise<void>((resolve) => httpServer.listen({ port: CONFIGS.PORT as number }, resolve));
 
-    console.log(`:::> 🚀 GQL Server ready at http://localhost:${PORT}/graphql`);
+    console.log(`:::> 🚀 GQL Server ready at http://localhost:${CONFIGS.PORT}/graphql`);
 
     return server;
 };

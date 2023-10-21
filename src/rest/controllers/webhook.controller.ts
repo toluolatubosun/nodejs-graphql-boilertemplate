@@ -1,11 +1,11 @@
-import response from "../../utils/rest/response";
-import WebhookService from "../../services/webhook.service";
+import response from "@/utilities/rest/response";
+import WebhookService from "@/services/webhook.service";
 
 import type { Request, Response } from "express";
 
 class WebhookController {
-    async demo(req: Request, res: Response) {
-        const result = await WebhookService.demo(req.body);
+    async demo(_: Request, res: Response) {
+        const result = await WebhookService.demo();
         res.status(200).send(response("Demo Webhook fulfilled", result));
     }
 }

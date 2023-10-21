@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IToken extends mongoose.Document {
     userId: string;
     token: string;
-    type: "reset_password" | "verify_email" | "refresh_token";
+    type: "password-reset" | "email-verification" | "refresh-token";
     expiresAt: Date;
 }
 
@@ -20,7 +20,7 @@ const tokenSchema: mongoose.Schema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["reset_password", "verify_email", "refresh_token"]
+        enum: ["password-reset", "email-verification", "refresh-token"]
     },
     expiresAt: {
         type: Date,

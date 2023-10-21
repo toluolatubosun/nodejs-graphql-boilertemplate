@@ -1,5 +1,5 @@
 class WebhookService {
-    async demo(data: any) {
+    async demo() {
         return {
             payment: "success",
             amount: 1000,

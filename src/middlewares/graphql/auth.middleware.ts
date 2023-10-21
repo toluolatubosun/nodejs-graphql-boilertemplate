@@ -1,15 +1,31 @@
 import JWT from "jsonwebtoken";
+import { CONFIGS } from "@/configs";
+import User, { IUser } from "@/models/user.model";
 
-import { JWT_SECRET } from "../../config";
-import User from "../../models/user.model";
+export default async ({ authorization, cookieToken }: { authorization?: string; cookieToken?: string }) => {
+    if (!authorization && !cookieToken) return null;
 
-export default async (authorization: string | undefined) => {
-    if (!authorization) return null;
+    const token = authorization ? authorization.split(" ")[1] : "";
 
-    const authToken = authorization.split(" ")[1];
-    const decoded = JWT.verify(authToken, JWT_SECRET) as any;
+    let decoded = null;
+    let user: IUser | null = null;
 
-    const user = await User.findOne({ _id: decoded.id });
+    const verifyToken = async (token: string) => {
+        decoded = JWT.verify(token, CONFIGS.JWT_SECRET) as { id: string; role: string };
+        user = await User.findOne({ _id: decoded.id });
+    };
 
-    return user;
+    try {
+        // Verify token from Authorization Header
+        if (token) {
+            await verifyToken(token);
+        }
+
+        // Verify token from Cookie
+        if (user === null && cookieToken) {
+            await verifyToken(cookieToken);
+        }
+    } catch (err) {}
+
+    return user as IUser | null;
 };

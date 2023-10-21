@@ -1,5 +1,5 @@
-import Query from "./Query";
-import Mutation from "./Mutation";
+import Query from "@/graphql/resolvers/Query";
+import Mutation from "@/graphql/resolvers/Mutation";
 
 export default {
     Query,

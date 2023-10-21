@@ -1,64 +1,65 @@
-import nodemailer from "nodemailer";
+import { render } from "@react-email/components";
 
-import { MAILER, APP_NAME } from "./../config";
-import CustomError from "../utils/graphql/custom-error";
+import { CONFIGS } from "@/configs";
+import mailer from "@/libraries/mailer";
+import WelcomeUserEmail from "@/email-templates/welcome-user";
+import PasswordResetEmail from "@/email-templates/password-reset";
+import VerificationLinkEmail from "@/email-templates/verification-link";
 
-import type { IUser } from "./../models/user.model";
+import type { IUser } from "@/models/user.model";
 
 class MailService {
-    user: IUser;
+    async sendWelcomeUserEmail(context: { user: Pick<IUser, "_id" | "name" | "email">; verificationToken: string }) {
+        const emailProp = {
+            name: context.user.name,
+            verificationLink: `${CONFIGS.URL.CLIENT_BASE_URL}/auth/verify-email?verificationToken=${context.verificationToken}&userId=${context.user._id}`
+        };
 
-    constructor(user: IUser) {
-        this.user = user;
-    }
-
-    async send(subject: string, content: string, recipient: string) {
-        content = content || " ";
-
-        if (!recipient || recipient.length < 1) throw new CustomError("Recipient is required");
-        if (!subject) throw new CustomError("Subject is required");
-
-        // Define nodemailer transporter
-        const transporter = nodemailer.createTransport({
-            host: MAILER.HOST,
-            port: MAILER.PORT,
-            secure: MAILER.SECURE,
-            auth: {
-                user: MAILER.USER,
-                pass: MAILER.PASSWORD
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        } as any);
-
-        const result = await transporter.sendMail({
-            from: `${APP_NAME} <${MAILER.USER}>`,
-            to: Array.isArray(recipient) ? recipient.join() : recipient,
-            subject,
-            text: content
+        return await mailer.sendMail({
+            to: context.user.email,
+            subject: "Welcome to apollo-server-boilertemplate",
+            text: render(WelcomeUserEmail(emailProp), { plainText: true }),
+            html: render(WelcomeUserEmail(emailProp))
         });
-
-        if (!result) throw new CustomError("Unable to send mail");
-
-        return result;
     }
 
-    async sendEmailVerificationMail(link: string) {
-        const subject = "Email Verification";
-        const content = `Hey ${this.user.name}, Please click on the link to verify your email ${link}`;
-        const recipient = this.user.email;
+    async sendVerificationLinkEmail(context: { user: Pick<IUser, "_id" | "name" | "email">; verificationToken: string }) {
+        const emailProp = {
+            name: context.user.name,
+            verificationLink: `${CONFIGS.URL.CLIENT_BASE_URL}/auth/verify-email?verificationToken=${context.verificationToken}&userId=${context.user._id}`
+        };
 
-        return await this.send(subject, content, recipient);
+        return await mailer.sendMail({
+            to: context.user.email,
+            subject: "Verify your email address",
+            text: render(VerificationLinkEmail(emailProp), { plainText: true }),
+            html: render(VerificationLinkEmail(emailProp))
+        });
     }
 
-    async sendPasswordResetMail(link: string) {
-        const subject = "Reset password";
-        const content = `Hey ${this.user.name}, Please click on the link to reset your password ${link}`;
-        const recipient = this.user.email;
+    async sendPasswordResetEmail(context: { user: Pick<IUser, "_id" | "name" | "email">; resetToken: string }) {
+        const emailProp = {
+            name: context.user.name,
+            resetLink: `${CONFIGS.URL.CLIENT_BASE_URL}/auth/reset-password?resetToken=${context.resetToken}&userId=${context.user._id}`
+        };
 
-        return await this.send(subject, content, recipient);
+        return await mailer.sendMail({
+            to: context.user.email,
+            subject: "Reset your password",
+            text: render(PasswordResetEmail(emailProp), { plainText: true }),
+            html: render(PasswordResetEmail(emailProp))
+        });
     }
 }
 
-export default MailService;
+// For testing purposes, uncomment code below and run `yarn start`
+// new MailService().sendWelcomeUserEmail({
+//     user: {
+//         _id: "5f9b3b1b9b3b1b9b3b1b9b3b",
+//         firstName: "John",
+//         email: "", // Add your email here to test
+//     },
+//     verificationToken: "5f9b3b1b9b3b1b9b3b1b9b3b",
+// });
+
+export default new MailService();
