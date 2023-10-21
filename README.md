@@ -2,6 +2,32 @@
 
 My apollo server express starter. Based off [eni4sure/nodejs-boilertemplate](https://github.com/eni4sure/nodejs-boilertemplate) 🚀🙌
 
+## Setup
+
+1. Clone the repo
+
+```bash
+git clone
+```
+
+2. Install dependencies
+
+```bash
+yarn install
+```
+
+3. Create a `.env` file in the root directory using the `.env.example` file
+
+```bash
+cp .env.example .env
+```
+
+4. Start the server
+
+```bash
+yarn start
+```
+
 ## Technologies
 
 -   GraphQL
