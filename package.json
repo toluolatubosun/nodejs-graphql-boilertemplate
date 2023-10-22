@@ -4,8 +4,8 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "start": "node dist/index.js",
         "prettier": "prettier --write .",
+        "start": "node dist/src/index.js",
         "lint": "eslint src/**/*.{ts,tsx}",
         "format": "eslint src/**/*.ts --fix",
         "build": "tsc -p . && yarn copy-files",
