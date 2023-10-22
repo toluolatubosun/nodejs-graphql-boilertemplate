@@ -1,0 +1,43 @@
+extend type Query {
+    me: User!
+    user(userId: ID!): User!
+    users(pagination: PaginationInput!): UsersPayload
+}
+
+extend type Mutation {
+    userDelete(userId: ID!): User!
+    userCreate(input: UserDataInput!): User!
+    userUpdateMe(input: UserDataInput!): User!
+    userUpdate(userId: ID!, input: UserDataInput!): User!
+}
+
+type User {
+    id: ID!
+    name: String!
+    role: String!
+    email: String!
+    image: String
+    password: String!
+    createdAt: String!
+    updatedAt: String!
+    isActive: Boolean!
+    isVerified: Boolean!
+}
+
+input UserDataInput {
+    role: Role
+    name: String
+    email: String
+    image: String
+    password: String
+}
+
+type UsersPayload {
+    users: [User!]!
+    pagination: PaginationPayload!
+}
+
+enum Role {
+    user
+    admin
+}

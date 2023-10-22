@@ -1,0 +1,18 @@
+type Query {
+    hello: String!
+}
+
+type Mutation {
+    _empty: String
+}
+
+type PaginationPayload {
+    total: Int!
+    next: String
+    hasNext: Boolean!
+}
+
+input PaginationInput {
+    next: ID
+    limit: Int
+}

@@ -1,0 +1,32 @@
+type Mutation {
+    authLogout(refreshToken: String): Boolean!
+    authLogin(input: LoginInput!): AuthPayload!
+    authRegister(input: RegisterInput!): AuthPayload!
+    authRequestPasswordReset(email: String!): Boolean!
+    authRefreshAccessToken(refreshToken: String): String!
+    authRequestEmailVerification(email: String!): Boolean!
+    authVerifyEmail(userId: ID!, verificationToken: String!): Boolean!
+    authUpdatePassword(oldPassword: String!, newPassword: String!): Boolean!
+    authResetPassword(userId: ID!, resetToken: String!, password: String!): Boolean!
+}
+
+type AuthPayload {
+    user: User!
+    token: AuthTokens!
+}
+
+type AuthTokens {
+    accessToken: String!
+    refreshToken: String!
+}
+
+input RegisterInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}

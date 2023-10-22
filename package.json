@@ -4,12 +4,13 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "build": "tsc -p .",
-        "dev": "nodemon --watch src --exec ts-node -r tsconfig-paths/register src/index.ts",
-        "start": "node build/index.js",
+        "start": "node dist/index.js",
         "prettier": "prettier --write .",
         "lint": "eslint src/**/*.{ts,tsx}",
-        "format": "eslint src/**/*.ts --fix"
+        "format": "eslint src/**/*.ts --fix",
+        "build": "tsc -p . && npm run copy-files",
+        "copy-files": "cp -r src/**/!(*.ts) dist/",
+        "dev": "nodemon --ext ts,tsx,graphql --watch src --exec ts-node -r tsconfig-paths/register src/index.ts"
     },
     "keywords": [
         "graphql",

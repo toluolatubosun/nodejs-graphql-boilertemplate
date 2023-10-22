@@ -2,12 +2,13 @@ import cors from "cors";
 import express from "express";
 import depthLimit from "graphql-depth-limit";
 import { ApolloServer } from "@apollo/server";
+import { readFile, readdir } from "fs/promises";
 import { expressMiddleware } from "@apollo/server/express4";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from "@apollo/server/plugin/landingPage/default";
 
 import { CONFIGS } from "@/configs";
-import typeDefs from "@/graphql/schema";
 import resolvers from "@/graphql/resolvers";
 import auth from "@/middlewares/graphql/auth.middleware";
 import { handleError } from "@/utilities/graphql/custom-error";
@@ -16,9 +17,15 @@ import type { Server } from "http";
 import type { Application } from "express";
 
 export default async (app: Application, httpServer: Server) => {
+    let typeDefs = await readFile(`${__dirname}/schema/schema.graphql`, "utf-8");
+    const files = await readdir(`${__dirname}/schema/data`);
+    for (const file of files) {
+        typeDefs += await readFile(`${__dirname}/schema/data/${file}`, "utf-8");
+    }
+
+    const schema = makeExecutableSchema({ typeDefs, resolvers });
     const server = new ApolloServer({
-        typeDefs,
-        resolvers,
+        schema,
         formatError: handleError,
         validationRules: [depthLimit(10)],
         plugins: [
