@@ -8,7 +8,7 @@
         "start": "node dist/src/index.js",
         "lint": "eslint src/**/*.{ts,tsx}",
         "format": "eslint src/**/*.ts --fix",
-        "build": "tsc -p . && yarn copy-files",
+        "build": "npx tsc && tsc-alias && yarn copy-files",
         "copy-files": "find ./src -type f ! -name '*.ts' -exec cp --parents {} dist \\;",
         "dev": "nodemon --ext ts,tsx,graphql --watch src --exec ts-node -r tsconfig-paths/register src/index.ts"
     },
