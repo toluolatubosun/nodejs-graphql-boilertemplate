@@ -54,3 +54,8 @@ Authentication details can be passed in the `Authorization` header or detected f
 ## Email
 
 Email is sent using nodemailer and your SMTP credentials. I also added the coded for sending email using AWS SES. You can find it in `src/libraries/aws.ts`
+
+## Production Notes
+
+The `copy-files` command in `package.json` is used to copy non-typescript files (e.g. _.graphql, _.tsx) to the `dist` folder when the project is built. P.S. the command works only for Mac and Linux users.<br><br>
+Your sever build command should be `yarn && yarn build`, if the server you are using does not come with yarn, add `npm install -g yarn`
