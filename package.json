@@ -9,7 +9,7 @@
         "lint": "eslint src/**/*.{ts,tsx}",
         "format": "eslint src/**/*.ts --fix",
         "build": "tsc -p . && yarn copy-files",
-        "copy-files": "shopt -s globstar && cp -r src/**/!(*.ts) dist/",
+        "copy-files": "find src -type f ! -name '*.ts' -exec cp --parents {} dist \\;",
         "dev": "nodemon --ext ts,tsx,graphql --watch src --exec ts-node -r tsconfig-paths/register src/index.ts"
     },
     "keywords": [
