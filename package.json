@@ -8,8 +8,8 @@
         "prettier": "prettier --write .",
         "lint": "eslint src/**/*.{ts,tsx}",
         "format": "eslint src/**/*.ts --fix",
-        "build": "tsc -p . && npm run copy-files",
-        "copy-files": "cp -r src/**/!(*.ts) dist/",
+        "build": "tsc -p . && yarn copy-files",
+        "copy-files": "shopt -s globstar && cp -r src/**/!(*.ts) dist/",
         "dev": "nodemon --ext ts,tsx,graphql --watch src --exec ts-node -r tsconfig-paths/register src/index.ts"
     },
     "keywords": [
