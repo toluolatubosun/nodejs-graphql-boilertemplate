@@ -1,4 +1,3 @@
-import ms from "ms";
 import Joi from "joi";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
@@ -180,7 +179,7 @@ class AuthService {
             token: hash,
             userId: user.id,
             type: "email-verification",
-            expiresAt: Date.now() + ms("1h")
+            expiresAt: Date.now() + CONFIGS.DEFAULT_DB_TOKEN_EXPIRES_MS
         }).save();
 
         if (isNewUser) {
@@ -206,7 +205,7 @@ class AuthService {
             token: hash,
             userId: user.id,
             type: "password-reset",
-            expiresAt: Date.now() + ms("1h")
+            expiresAt: Date.now() + CONFIGS.DEFAULT_DB_TOKEN_EXPIRES_MS
         }).save();
 
         await MailService.sendPasswordResetEmail({ user, resetToken });

@@ -11,10 +11,11 @@ const CONFIGS = {
     BCRYPT_SALT: Number(process.env.BCRYPT_SALT) || 10,
     JWT_SECRET: process.env.JWT_SECRET || "my-apollo-server-express-starter",
     MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017/my-apollo-server-express-starter",
+    DEFAULT_DB_TOKEN_EXPIRES_MS: process.env.DEFAULT_TOKEN_EXPIRES_IN ? ms(process.env.DEFAULT_TOKEN_EXPIRES_IN) : ms("1h"),
     ACCESS_TOKEN_JWT_EXPIRES_MS: process.env.ACCESS_TOKEN_JWT_EXPIRES_IN ? ms(process.env.ACCESS_TOKEN_JWT_EXPIRES_IN) : ms("1h"),
     REFRESH_TOKEN_JWT_EXPIRES_MS: process.env.REFRESH_TOKEN_JWT_EXPIRES_IN ? ms(process.env.REFRESH_TOKEN_JWT_EXPIRES_IN) : ms("30d"),
     URL: {
-        CLIENT_BASE_URL: process.env.CLIENT_URL || "http://localhost:3000",
+        CLIENT_BASE_URL: process.env.CLIENT_BASE_URL || "http://localhost:3000",
         BASE_URL: process.env.BASE_URL || `http://localhost:${process.env.PORT || 8000}`
     },
     ROLES: {
