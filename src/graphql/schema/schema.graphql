@@ -7,9 +7,15 @@ type Mutation {
 }
 
 type PaginationPayload {
-    total: Int!
-    next: String
-    hasNext: Boolean!
+    totalDocs: Int!
+    limit: Int!
+    totalPages: Int!
+    page: Int
+    pagingCounter: Int!
+    hasPrevPage: Boolean!
+    hasNextPage: Boolean!
+    prevPage: Int
+    nextPage: Int
 }
 
 input PaginationInput {

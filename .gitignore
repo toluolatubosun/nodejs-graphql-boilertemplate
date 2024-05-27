@@ -8,5 +8,3 @@ dist
 
 # use yarn :)
 package-lock.json
-
-.vscode

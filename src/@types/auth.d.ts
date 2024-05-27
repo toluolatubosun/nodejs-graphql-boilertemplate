@@ -26,12 +26,12 @@ interface LogoutInput {
 
 interface VerifyEmailInput {
     userId: string;
-    verificationToken: string;
+    verificationOtp: string;
 }
 
 interface ResetPasswordInput {
     userId: string;
-    resetToken: string;
+    resetOtp: string;
     password: string;
 }
 
@@ -60,12 +60,12 @@ interface AuthRequestPasswordResetArgs {
 }
 
 interface AuthRequestEmailVerificationArgs {
-    email: string;
+    userId: string;
 }
 
 interface AuthVerifyEmailArgs {
     userId: string;
-    verificationToken: string;
+    verificationOtp: string;
 }
 
 interface AuthUpdatePasswordArgs {
@@ -75,7 +75,7 @@ interface AuthUpdatePasswordArgs {
 
 interface AuthResetPasswordArgs {
     userId: string;
-    resetToken: string;
+    resetOtp: string;
     password: string;
 }
 

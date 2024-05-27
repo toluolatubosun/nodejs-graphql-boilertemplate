@@ -11,8 +11,8 @@ export default async ({ authorization, cookieToken }: { authorization?: string; 
     let user: IUser | null = null;
 
     const verifyToken = async (token: string) => {
-        decoded = JWT.verify(token, CONFIGS.JWT_SECRET) as { id: string; role: string };
-        user = await User.findOne({ _id: decoded.id });
+        decoded = JWT.verify(token, CONFIGS.JWT_SECRET) as { _id: string };
+        user = await User.findOne({ _id: decoded._id });
     };
 
     try {

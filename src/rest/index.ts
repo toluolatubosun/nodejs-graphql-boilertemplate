@@ -7,7 +7,7 @@ import type { Application } from "express";
 
 export default (app: Application) => {
     app.get("/", (_, res) => {
-        res.send("Hello World!");
+        res.send(`Hello World, from ${CONFIGS.APP_NAME}!`);
     });
 
     app.get("/error", () => {

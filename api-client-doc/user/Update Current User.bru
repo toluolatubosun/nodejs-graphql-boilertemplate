@@ -1,0 +1,36 @@
+meta {
+  name: Update Current User
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation UserUpdateMe($input: UserDataInput!) {
+    userUpdateMe(input: $input) {
+      id
+      name
+      role
+      email
+      image
+      createdAt
+      updatedAt
+      emailVerified
+      accountDisabled
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "input": {
+      "name": "John Olatubosun Updated"
+    }
+  }
+}

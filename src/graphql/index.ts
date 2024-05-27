@@ -4,12 +4,13 @@ import depthLimit from "graphql-depth-limit";
 import { ApolloServer } from "@apollo/server";
 import { readFile, readdir } from "fs/promises";
 import { expressMiddleware } from "@apollo/server/express4";
+import { sentryGraphQLConfig } from "@/libraries/sentry";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from "@apollo/server/plugin/landingPage/default";
 
-import { CONFIGS } from "@/configs";
 import resolvers from "@/graphql/resolvers";
+import { CONFIGS, DEPLOYMENT_ENV } from "@/configs";
 import auth from "@/middlewares/graphql/auth.middleware";
 import { handleError } from "@/utilities/graphql/custom-error";
 
@@ -28,12 +29,7 @@ export default async (app: Application, httpServer: Server) => {
         schema,
         formatError: handleError,
         validationRules: [depthLimit(10)],
-        plugins: [
-            ApolloServerPluginDrainHttpServer({ httpServer }),
-            CONFIGS.NODE_ENV === "production"
-                ? ApolloServerPluginLandingPageProductionDefault({ graphRef: "my-graph-id@my-graph-variant", footer: false })
-                : ApolloServerPluginLandingPageLocalDefault({ footer: false })
-        ]
+        plugins: [sentryGraphQLConfig, ApolloServerPluginDrainHttpServer({ httpServer }), DEPLOYMENT_ENV === "production" ? ApolloServerPluginLandingPageProductionDefault({ graphRef: "my-graph-id@my-graph-variant", footer: false }) : ApolloServerPluginLandingPageLocalDefault({ footer: false })],
     });
 
     await server.start();
@@ -48,9 +44,9 @@ export default async (app: Application, httpServer: Server) => {
                 return {
                     req,
                     res,
-                    user
+                    user,
                 };
-            }
+            },
         })
     );
 

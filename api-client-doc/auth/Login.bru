@@ -1,0 +1,43 @@
+meta {
+  name: Login
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation AuthLogin($input: LoginInput!) {
+    authLogin(input: $input) {
+      user {
+        id
+        name
+        role
+        email
+        image
+        createdAt
+        updatedAt
+        emailVerified
+        accountDisabled
+      }
+      token {
+        accessToken
+        refreshToken
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "input": {
+      "email": "toluolatubosun@gmail.com",
+      "password": "password"
+    }
+  }
+}

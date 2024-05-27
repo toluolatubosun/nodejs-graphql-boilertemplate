@@ -17,11 +17,10 @@ type User {
     role: String!
     email: String!
     image: String
-    password: String!
     createdAt: String!
     updatedAt: String!
-    isActive: Boolean!
-    isVerified: Boolean!
+    emailVerified: Boolean!
+    accountDisabled: Boolean!
 }
 
 input UserDataInput {
@@ -39,5 +38,5 @@ type UsersPayload {
 
 enum Role {
     user
-    admin
+    super_admin
 }

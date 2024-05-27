@@ -1,0 +1,23 @@
+meta {
+  name: Logout
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation AuthLogout($refreshToken: String) {
+    authLogout(refreshToken: $refreshToken)
+  }
+}
+
+body:graphql:vars {
+  {
+    "refreshToken": ""
+  }
+}

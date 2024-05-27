@@ -1,0 +1,23 @@
+meta {
+  name: Request Email Verification
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation AuthRequestEmailVerification($userId: String!) {
+    authRequestEmailVerification(userId: $userId)
+  }
+}
+
+body:graphql:vars {
+  {
+    "userId": "66545503ef8d218f359499be"
+  }
+}

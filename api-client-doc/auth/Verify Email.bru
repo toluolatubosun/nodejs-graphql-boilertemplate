@@ -1,0 +1,24 @@
+meta {
+  name: Verify Email
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation AuthVerifyEmail($userId: ID!, $verificationOtp: String!) {
+    authVerifyEmail(userId: $userId, verificationOtp: $verificationOtp)
+  }
+}
+
+body:graphql:vars {
+  {
+    "userId": "66545503ef8d218f359499be",
+    "verificationOtp": "be2d63cbaa1de7a63f0c5da8b4df508b0568c39a4e99f1391c817bccf2c69c09"
+  }
+}

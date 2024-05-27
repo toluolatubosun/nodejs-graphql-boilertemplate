@@ -7,7 +7,7 @@ import CustomError from "@/utilities/graphql/custom-error";
 class CloudinaryUtil {
     constructor() {
         cloudinary.v2.config({
-            cloudinary_url: CONFIGS.CLOUDINARY_URL
+            cloudinary_url: CONFIGS.CLOUDINARY.URL,
         });
     }
 
