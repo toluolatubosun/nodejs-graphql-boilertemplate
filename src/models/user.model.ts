@@ -13,7 +13,7 @@ export interface IUser extends mongoose.Document {
     updatedAt: Date;
 }
 
-const userSchema: mongoose.Schema = new mongoose.Schema<IUser>(
+const userSchema: mongoose.Schema<IUser> = new mongoose.Schema<IUser>(
     {
         name: {
             type: String,
@@ -60,4 +60,4 @@ const userSchema: mongoose.Schema = new mongoose.Schema<IUser>(
 
 userSchema.plugin(paginate);
 
-export default mongoose.model<IUser, mongoose.PaginateModel<IUser>>("user", userSchema);
+export default mongoose.model<IUser, mongoose.PaginateModel<IUser>>("users", userSchema);

@@ -2,7 +2,7 @@ import "express-async-errors";
 import http from "http";
 import express from "express";
 
-import { connectMongoDB } from "@/libraries/mongo";
+import { connectMongoDB } from "@/libraries/mongodb";
 import { applyCoreMiddleware } from "@/middlewares/core.middleware";
 
 import restServer from "@/rest";
