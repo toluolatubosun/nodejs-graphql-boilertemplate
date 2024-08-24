@@ -1,8 +1,7 @@
 import { ZodError } from "zod";
 
 export const extractZodError = (error: ZodError<any>) => {
-    // TODO :: Comment this
-    console.log("error", error);
+    // console.log("error", error);
 
     const formattedError = new Set<{ message: string }>();
 
