@@ -136,7 +136,7 @@ const CONFIG_BUILDER = {
 
         // App Level Configs
         // ============================================================
-        CORS_ALLOWED_ORIGINS: process.env.CORS_ALLOWED_ORIGINS ? process.env.CORS_ALLOWED_ORIGINS.split(",") : [],
+        CORS_ALLOWED_ORIGINS: ["https://example.com"],
 
         // e.g
         // STRIPE: {
