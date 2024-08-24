@@ -6,7 +6,7 @@ const redisClient = new Redis(CONFIGS.REDIS_URI, {
 });
 
 redisClient.on("connect", () => {
-    console.log(`:::> Connected to redis database. ${DEPLOYMENT_ENV !== "production" && CONFIGS.REDIS_URI} <:::`);
+    console.log(`:::> Connected to redis database. ${DEPLOYMENT_ENV !== "production" && CONFIGS.REDIS_URI}`);
 });
 
 redisClient.on("error", (error) => {
