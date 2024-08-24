@@ -1,25 +1,27 @@
-import Joi from "joi";
+import { z } from "zod";
 import CloudinaryUtil from "@/libraries/cloudinary";
 import UserModel, { IUser } from "@/models/user.model";
 import CustomError from "@/utilities/graphql/custom-error";
-
-import type { UploadApiResponse } from "cloudinary";
+import { extractZodError } from "@/utilities/helpful-methods";
 
 class UserService {
-    async create(input: UserDataInput) {
-        const { error, value: data } = Joi.object<UserDataInput>({
-            name: Joi.string().required(),
-            role: Joi.string().optional(),
-            image: Joi.string().optional(),
-            password: Joi.string().required(),
-            email: Joi.string().email().required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async create(input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    name: z.string().trim(),
+                    email: z.string().email().trim(),
+                    role: z.string().trim().optional(),
+                    image: z.string().trim().optional(),
+                    password: z.string().min(6).trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
-        if (data.image) {
-            data.image = ((await CloudinaryUtil.uploadBase64(data.image, "users")) as UploadApiResponse).secure_url;
+        if (data.input.image) {
+            const uploadResult = await CloudinaryUtil.uploadBase64(data.input.image, "users");
+            data.input.image = uploadResult.secure_url;
         }
 
         return await new UserModel(data).save();
@@ -29,7 +31,6 @@ class UserService {
         const { limit = 10, page = 1 } = input;
 
         const filter: Record<string, any> = {};
-
         const options = {
             page,
             limit,
@@ -51,40 +52,41 @@ class UserService {
         return user;
     }
 
-    async update(userId: string, input: UserUpdateInput) {
-        const { error, value: data } = Joi.object<UserUpdateInput>({
-            name: Joi.string().optional(),
-            image: Joi.string().optional(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async update(userId: string, input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    name: z.string().trim().optional(),
+                    image: z.string().trim().optional(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
         const user = await UserModel.findOne({ _id: userId });
         if (!user) throw new CustomError("user not found");
 
         const updateContext: Record<string, any> = {
-            name: data.name,
-            image: data.image,
+            name: data.input.name,
+            image: data.input.image,
         };
 
-        if (data.image) {
-            updateContext.image = ((await CloudinaryUtil.uploadBase64(data.image, "users")) as UploadApiResponse).secure_url;
+        if (data.input.image) {
+            const uploadedImage = await CloudinaryUtil.uploadBase64(data.input.image, "users");
+            updateContext.image = uploadedImage.secure_url;
+
             if (user.image) await CloudinaryUtil.deleteFile(user.image);
         }
 
-        await UserModel.updateOne({ _id: userId }, { $set: updateContext }, { new: true });
+        await UserModel.updateOne({ _id: userId }, { $set: updateContext });
 
         return { id: user.id, ...user.toObject(), ...updateContext } as IUser;
     }
 
     async delete(userId: string) {
-        const user = await UserModel.findOne({ _id: userId });
-        if (!user) throw new CustomError("user does not exist");
-
-        if (user.image) await CloudinaryUtil.deleteFile(user.image);
-
-        await UserModel.deleteOne({ _id: userId });
+        const user = await UserModel.findOneAndDelete({ _id: userId });
+        if (user && user.image) await CloudinaryUtil.deleteFile(user.image);
+        if (!user) throw new CustomError("User not found");
 
         return user;
     }

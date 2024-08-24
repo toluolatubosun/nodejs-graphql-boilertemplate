@@ -1,4 +1,4 @@
-import Joi from "joi";
+import { z } from "zod";
 import bcryptjs from "bcryptjs";
 import * as Sentry from "@sentry/node";
 
@@ -7,27 +7,30 @@ import UserModel from "@/models/user.model";
 import MailService from "@/services/mail.service";
 import TokenService from "@/services/token.service";
 import CustomError from "@/utilities/graphql/custom-error";
+import { extractZodError } from "@/utilities/helpful-methods";
 import TokenModel, { TOKEN_TYPES } from "@/models/token.model";
 
 class AuthService {
-    async register(input: RegisterInput) {
-        const { error, value: data } = Joi.object<RegisterInput>({
-            email: Joi.string().email().required(),
-            name: Joi.string().min(3).max(30).required(),
-            password: Joi.string().min(6).max(30).required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async register(input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    name: z.string().trim(),
+                    email: z.string().email().trim(),
+                    password: z.string().min(6).trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
-        let emailExist = await UserModel.findOne({ email: data.email });
+        let emailExist = await UserModel.findOne({ email: data.input.email });
         if (emailExist) throw new CustomError("email already exists");
 
-        const passwordHash = await bcryptjs.hash(data.password, CONFIGS.BCRYPT_SALT);
+        const passwordHash = await bcryptjs.hash(data.input.password, CONFIGS.BCRYPT_SALT);
 
         const context = {
-            name: data.name,
-            email: data.email,
+            name: data.input.name,
+            email: data.input.email,
             password: passwordHash,
         };
 
@@ -42,21 +45,23 @@ class AuthService {
         return { user, token };
     }
 
-    async login(input: LoginInput) {
-        const { error, value: data } = Joi.object<LoginInput>({
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).max(30).required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async login(input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    email: z.string().email().trim(),
+                    password: z.string().trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
         // Check if user exist
-        const user = await UserModel.findOne({ email: data.email });
+        const user = await UserModel.findOne({ email: data.input.email });
         if (!user) throw new CustomError("incorrect email or password");
 
         // Check if password is correct
-        const validPassword = await bcryptjs.compare(data.password, user.password);
+        const validPassword = await bcryptjs.compare(data.input.password, user.password);
         if (!validPassword) throw new CustomError("incorrect email or password");
 
         // check if account is disabled
@@ -68,24 +73,26 @@ class AuthService {
         return { user, token };
     }
 
-    async verifyEmail(input: VerifyEmailInput) {
-        const { error, value: data } = Joi.object<VerifyEmailInput>({
-            userId: Joi.string().required(),
-            verificationOtp: Joi.string().required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async verifyEmail(input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    userId: z.string().trim(),
+                    verificationOtp: z.string().trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
         // Check if user exists
-        const user = await UserModel.findOne({ _id: data.userId });
+        const user = await UserModel.findOne({ _id: data.input.userId });
         if (!user) throw new CustomError("invalid user id");
 
         const isValidToken = await TokenService.verifyOtpToken({
-            userId: user._id,
+            userId: String(user._id),
             deleteIfValidated: true,
-            code: data.verificationOtp,
-            token: data.verificationOtp,
+            code: data.input.verificationOtp,
+            token: data.input.verificationOtp,
             tokenType: TOKEN_TYPES.EMAIL_VERIFICATION,
         });
         if (!isValidToken) throw new CustomError("invalid or expired token. Kindly request a new verification link");
@@ -108,7 +115,7 @@ class AuthService {
         if (token) await token.deleteOne();
 
         // Create new otp (code and token)
-        const verificationOtp = await TokenService.generateOtpToken({ userId: user._id, tokenType: TOKEN_TYPES.EMAIL_VERIFICATION });
+        const verificationOtp = await TokenService.generateOtpToken({ userId: String(user._id), tokenType: TOKEN_TYPES.EMAIL_VERIFICATION });
 
         if (isNewUser) {
             await MailService.sendWelcomeUserEmail({ user: { _id: user._id, email: user.email, name: user.name }, verificationToken: verificationOtp.token });
@@ -126,60 +133,64 @@ class AuthService {
         if (!user) return null;
 
         // Create new otp (code and token)
-        const resetOtp = await TokenService.generateOtpToken({ userId: user._id, tokenType: TOKEN_TYPES.PASSWORD_RESET });
+        const resetOtp = await TokenService.generateOtpToken({ userId: String(user._id), tokenType: TOKEN_TYPES.PASSWORD_RESET });
 
         await MailService.sendPasswordResetEmail({ user: { _id: user._id, email: user.email, name: user.name }, resetToken: resetOtp.token });
 
         return true;
     }
 
-    async resetPassword(input: ResetPasswordInput) {
-        const { error, value: data } = Joi.object<ResetPasswordInput>({
-            userId: Joi.string().required(),
-            resetOtp: Joi.string().required(),
-            password: Joi.string().min(6).max(30).required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async resetPassword(input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    userId: z.string().trim(),
+                    resetOtp: z.string().trim(),
+                    password: z.string().trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
         // Check if user exists
-        const user = await UserModel.findOne({ _id: data.userId });
+        const user = await UserModel.findOne({ _id: data.input.userId });
         if (!user) throw new CustomError("invalid user id");
 
         const isValidToken = await TokenService.verifyOtpToken({
-            userId: user._id,
-            code: data.resetOtp,
-            token: data.resetOtp,
+            userId: String(user._id),
+            code: data.input.resetOtp,
+            token: data.input.resetOtp,
             deleteIfValidated: true,
             tokenType: TOKEN_TYPES.PASSWORD_RESET,
         });
         if (!isValidToken) throw new CustomError("invalid or expired token. Kindly make a new password reset request");
 
         // Hash new password and update user
-        const passwordHash = await bcryptjs.hash(data.password, CONFIGS.BCRYPT_SALT);
+        const passwordHash = await bcryptjs.hash(data.input.password, CONFIGS.BCRYPT_SALT);
         await UserModel.updateOne({ _id: user._id }, { $set: { password: passwordHash } });
 
         return true;
     }
 
-    async updatePassword(userId: string, input: UpdatePasswordInput) {
-        const { error, value: data } = Joi.object<UpdatePasswordInput>({
-            oldPassword: Joi.string().min(6).max(30).required(),
-            newPassword: Joi.string().min(6).max(30).required(),
-        })
-            .options({ stripUnknown: true })
-            .validate(input);
-        if (error) throw new CustomError(error.message);
+    async updatePassword(userId: string, input: Object) {
+        const { error, data } = z
+            .object({
+                input: z.object({
+                    oldPassword: z.string().trim(),
+                    newPassword: z.string().min(6).trim(),
+                }),
+            })
+            .safeParse({ input });
+        if (error) throw new CustomError(extractZodError(error));
 
         const user = await UserModel.findOne({ _id: userId });
         if (!user) throw new CustomError("user dose not exist");
 
         // Check if user password is correct
-        const isCorrect = await bcryptjs.compare(data.oldPassword, user.password);
+        const isCorrect = await bcryptjs.compare(data.input.oldPassword, user.password);
         if (!isCorrect) throw new CustomError("incorrect password");
 
-        const hash = await bcryptjs.hash(data.newPassword, CONFIGS.BCRYPT_SALT);
+        const hash = await bcryptjs.hash(data.input.newPassword, CONFIGS.BCRYPT_SALT);
 
         await UserModel.updateOne({ _id: userId }, { $set: { password: hash } }, { new: true });
 

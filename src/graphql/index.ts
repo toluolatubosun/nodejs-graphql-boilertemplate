@@ -1,10 +1,13 @@
 import cors from "cors";
 import express from "express";
+import { WebSocketServer } from "ws";
 import depthLimit from "graphql-depth-limit";
 import { ApolloServer } from "@apollo/server";
 import { readFile, readdir } from "fs/promises";
-import { expressMiddleware } from "@apollo/server/express4";
+import { useServer } from "graphql-ws/lib/use/ws";
 import { sentryGraphQLConfig } from "@/libraries/sentry";
+import { RedisPubSub } from "graphql-redis-subscriptions";
+import { expressMiddleware } from "@apollo/server/express4";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from "@apollo/server/plugin/landingPage/default";
@@ -12,6 +15,7 @@ import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPag
 import resolvers from "@/graphql/resolvers";
 import { CONFIGS, DEPLOYMENT_ENV } from "@/configs";
 import auth from "@/middlewares/graphql/auth.middleware";
+import { parseWSCookies } from "@/utilities/helpful-methods";
 import { handleError } from "@/utilities/graphql/custom-error";
 
 import type { Server } from "http";
@@ -25,11 +29,55 @@ export default async (app: Application, httpServer: Server) => {
     }
 
     const schema = makeExecutableSchema({ typeDefs, resolvers });
+    const PubSubClient = new RedisPubSub({ connection: CONFIGS.REDIS_URI });
+    const wsServer = new WebSocketServer({ server: httpServer, path: "/graphql" });
+    const serverCleanup = useServer(
+        {
+            schema,
+            onConnect: async ({ connectionParams, extra: { request } }) => {
+                const cookies = parseWSCookies(request.headers.cookie);
+                const user = await auth({ authorization: connectionParams?.authorization as string, cookieToken: cookies.__access });
+                if (user) {
+                    // await UserService.setOnline(user.id);
+                }
+            },
+            onDisconnect: async ({ connectionParams, extra: { request } }) => {
+                const cookies = parseWSCookies(request.headers.cookie);
+                const user = await auth({ authorization: connectionParams?.authorization as string, cookieToken: cookies.__access });
+                if (user) {
+                    // await UserService.setOffline(user.id);
+                }
+            },
+            context: async ({ connectionParams, extra: { request } }) => {
+                const cookies = parseWSCookies(request.headers.cookie);
+                const user = await auth({ authorization: connectionParams?.authorization as string, cookieToken: cookies.__access });
+                return {
+                    user: user,
+                    PubSub: PubSubClient,
+                };
+            },
+        },
+        wsServer
+    );
+
     const server = new ApolloServer({
         schema,
         formatError: handleError,
         validationRules: [depthLimit(10)],
-        plugins: [sentryGraphQLConfig, ApolloServerPluginDrainHttpServer({ httpServer }), DEPLOYMENT_ENV === "production" ? ApolloServerPluginLandingPageProductionDefault({ graphRef: "my-graph-id@my-graph-variant", footer: false }) : ApolloServerPluginLandingPageLocalDefault({ footer: false })],
+        plugins: [
+            sentryGraphQLConfig,
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            DEPLOYMENT_ENV === "production" ? ApolloServerPluginLandingPageProductionDefault({ graphRef: "my-graph-id@my-graph-variant", footer: false }) : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await serverCleanup.dispose();
+                        },
+                    };
+                },
+            },
+        ],
     });
 
     await server.start();
@@ -45,6 +93,7 @@ export default async (app: Application, httpServer: Server) => {
                     req,
                     res,
                     user,
+                    PubSub: PubSubClient,
                 };
             },
         })

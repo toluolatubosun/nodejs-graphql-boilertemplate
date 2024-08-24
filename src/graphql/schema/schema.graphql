@@ -6,6 +6,10 @@ type Mutation {
     _empty: String
 }
 
+type Subscription {
+    _empty: String
+}
+
 type PaginationPayload {
     totalDocs: Int!
     limit: Int!

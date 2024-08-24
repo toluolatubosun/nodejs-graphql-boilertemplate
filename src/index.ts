@@ -2,6 +2,7 @@ import "express-async-errors";
 import http from "http";
 import express from "express";
 
+import { connectToRedis } from "@/libraries/redis";
 import { connectMongoDB } from "@/libraries/mongodb";
 import { applyCoreMiddleware } from "@/middlewares/core.middleware";
 
@@ -12,6 +13,7 @@ const app = express();
 const httpServer = http.createServer(app);
 
 connectMongoDB();
+connectToRedis();
 applyCoreMiddleware(app);
 
 restServer(app);

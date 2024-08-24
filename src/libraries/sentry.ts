@@ -1,7 +1,5 @@
 import * as Sentry from "@sentry/node";
-
 import type { GraphQLRequestContext } from "@apollo/server";
-import type { Context, WithRequired } from "@/@types/graphql";
 
 export const sentryGraphQLConfig = {
     async requestDidStart(_: GraphQLRequestContext<Context>) {

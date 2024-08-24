@@ -14,3 +14,8 @@ interface PaginationPayload {
     prevPage?: number | null;
     nextPage?: number | null;
 }
+
+interface AuthToken {
+    accessToken: string;
+    refreshToken: string;
+}

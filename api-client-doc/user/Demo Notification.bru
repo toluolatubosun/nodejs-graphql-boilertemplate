@@ -1,0 +1,17 @@
+meta {
+  name: Demo Notification
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: {{GQL_BASE_URL}}
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation UserDemoNotification {
+    userDemoNotification
+  }
+}

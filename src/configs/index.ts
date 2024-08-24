@@ -66,6 +66,10 @@ const GLOBAL_CONSTANTS = {
         SUPER_ADMIN: ["super_admin"],
     },
 
+    GRAPHQL_SUBSCRIPTION_TOPIC: {
+        USER_NOTIFICATION: "USER_NOTIFICATION",
+    },
+
     MAILER: {
         SMTP_HOST: process.env.MAILER_SMTP_HOST,
         SMTP_PORT: process.env.MAILER_SMTP_PORT,
@@ -105,7 +109,7 @@ const CONFIG_BUILDER = {
         // DB Constants
         // ============================================================
         REDIS_URI: "redis://127.0.0.1:6379",
-        MONGODB_URI: "mongodb://127.0.0.1:27017/nodejs-boilertemplate",
+        MONGODB_URI: "mongodb://127.0.0.1:27017/nodejs-graphql-boilertemplate",
 
         // App Level Configs
         // ============================================================

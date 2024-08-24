@@ -1,5 +1,8 @@
 {
     "$schema": "http://json.schemastore.org/tsconfig",
+    "ts-node": {
+        "files": true
+    },
     "compilerOptions": {
         /* Language and Environment */
         "target": "es2016",
