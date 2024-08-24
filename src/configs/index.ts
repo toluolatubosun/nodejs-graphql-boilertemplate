@@ -12,7 +12,7 @@ dotenv.config();
 // # To add a new variable:
 // ============================================================
 // - For environment variables & constants that are the same across all environments, add them to the GLOBAL_CONSTANTS object.
-// - For environment-specific variables (i.e they change depending on the environemnt), add them to the environment's object in each of the CONFIG_BUILDER object.
+// - For environment-specific variables (i.e they change depending on the environment), add them to the environment's object in each of the CONFIG_BUILDER object.
 
 // # To add a new environment:
 // ============================================================
@@ -46,14 +46,6 @@ const GLOBAL_CONSTANTS = {
     SENTRY: {
         RELEASE: APP_VERSION,
         DSN: "", // TODO: Add Sentry DSN here
-    },
-
-    // CORS
-    // ============================================================
-    CORS_SETTINGS: {
-        credentials: true,
-        exposedHeaders: ["set-cookie"],
-        origin: process.env.CORS_ALLOWED_ORIGINS ? process.env.CORS_ALLOWED_ORIGINS.split(",") : [],
     },
 
     // App Level Configs
@@ -113,6 +105,7 @@ const CONFIG_BUILDER = {
 
         // App Level Configs
         // ============================================================
+        CORS_ALLOWED_ORIGINS: ["http://localhost:3000"],
 
         // e.g
         // STRIPE: {
@@ -143,6 +136,7 @@ const CONFIG_BUILDER = {
 
         // App Level Configs
         // ============================================================
+        CORS_ALLOWED_ORIGINS: process.env.CORS_ALLOWED_ORIGINS ? process.env.CORS_ALLOWED_ORIGINS.split(",") : [],
 
         // e.g
         // STRIPE: {

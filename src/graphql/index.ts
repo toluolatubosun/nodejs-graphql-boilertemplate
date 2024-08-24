@@ -85,7 +85,11 @@ export default async (app: Application, httpServer: Server) => {
     app.use(
         "/graphql",
         express.json(),
-        cors<cors.CorsRequest>(CONFIGS.CORS_SETTINGS),
+        cors<cors.CorsRequest>({
+            credentials: true,
+            exposedHeaders: ["set-cookie"],
+            origin: [...CONFIGS.CORS_ALLOWED_ORIGINS],
+        }),
         expressMiddleware(server, {
             context: async ({ req, res }: any) => {
                 const user = await auth({ authorization: req.headers.authorization, cookieToken: req.cookies.__access });

@@ -46,7 +46,13 @@ const applyCoreMiddleware = (app: Express): Express => {
     app.use(Sentry.Handlers.tracingHandler());
 
     // Enable CORS
-    app.use(cors(CONFIGS.CORS_SETTINGS));
+    app.use(
+        cors({
+            credentials: true,
+            exposedHeaders: ["set-cookie"],
+            origin: [...CONFIGS.CORS_ALLOWED_ORIGINS],
+        })
+    );
 
     // Secure the app by setting various HTTP headers off.
     app.use(helmet({ contentSecurityPolicy: false }));
